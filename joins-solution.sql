@@ -37,7 +37,22 @@ SELECT SUM("warehouse_product"."on_hand") FROM "warehouse_product"
 JOIN "products" ON "products"."id"= "warehouse_product"."product_id"
 WHERE "description" = 'diet pepsi';
 
+-- ## Stretch
+-- 9. How much was the total cost for each order?
+SELECT "line_items"."order_id", SUM("products"."unit_price") FROM "orders"
+JOIN "line_items" ON "line_items"."order_id"="orders"."id"
+JOIN "products" ON "products"."id"="line_items"."product_id"
+GROUP BY "line_items"."order_id"
+ORDER BY "line_items"."order_id";
+-- 10. How much has each customer spent in total?
+SELECT "customers"."first_name", "customers"."last_name", SUM("products"."unit_price" * "line_items"."quantity") FROM "customers"
+JOIN "addresses" ON "addresses"."customer_id"="customers"."id"
+JOIN "orders" ON "orders"."address_id"="addresses"."id"
+JOIN "line_items" ON "line_items"."order_id"="orders"."id"
+JOIN "products" ON "products"."id"="line_items"."product_id"
+GROUP BY "customers"."first_name", "customers"."last_name";
 
+-- 11. How much has each customer spent in total? Customers who have spent $0 should still show up in the table. It should say 0, not NULL (research coalesce).
 
 
 
